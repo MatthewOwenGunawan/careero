@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careero - AI Coaching</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style_reconstructed.css">
+    <link rel="stylesheet" href="theme.css">
+
+    <style>
+        .hidden { display: none !important; }
+        
+        .cam-toggle-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: 0.2s;
+            z-index: 10;
+        }
+        .cam-toggle-btn:hover { background-color: var(--primary-green); }
+        .cam-toggle-btn.active { background-color: #2f6b10; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container" style="display: flex; min-height: 100vh;">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>Careero</h2>
+            <p>Your Career Journey</p>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="dashboard.html"><i class="fa-solid fa-table-columns"></i> Dashboard</a>
+            <a href="cvbuilder.html"><i class="fa-regular fa-file"></i> CV Builder</a>
+            <a href="jobmatch.html"><i class="fa-solid fa-briefcase"></i> Job Match</a>
+            <a href="ai_coaching.html" class="active"><i class="fa-solid fa-brain"></i> AI Coaching</a>
+            <a href="profile.html"><i class="fa-regular fa-user"></i> Profile</a>
+        </nav>
+    </aside>
+
+    <main class="main-content" style="flex: 1; padding: 40px; overflow-y: auto;">
+
+        <header class="topbar-nav" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+            <div style="display: flex; align-items: center; gap: 40px;">
+                <nav class="horizontal-menu" style="display: flex; gap: 24px; font-weight: 500; font-size: 15px;">
+                    <a href="dashboard.html" style="text-decoration: none; color: #666;">Dashboard</a>
+                    <a href="cvbuilder.html" style="text-decoration: none; color: #666;">CV Builder</a>
+                    <a href="jobmatch.html" style="text-decoration: none; color: #666;">Job Match</a>
+                    <a href="ai_coaching.html" class="active" style="text-decoration: none; color: #37521D; border-bottom: 2px solid #37521D; padding-bottom: 4px;">AI Coaching</a>
+                </nav>
+            </div>
+
+            <div class="top-actions" style="display: flex; align-items: center; gap: 12px;">
+                
+                <div class="notif-wrapper" style="position: relative; display: flex; align-items: center;">
+                    <button class="icon-btn" id="bellIconToggleBtn" style="width: 46px; height: 46px; border: none; border-radius: 50%; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative;">
+                        <i class="fa-regular fa-bell" id="bellIcon" style="font-size: 20px; transition: color 0.3s ease;"></i>
+                        <span id="notifBadge" class="hidden" style="position: absolute; top: -2px; right: -2px; background-color: #d11124; color: white; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 50%; pointer-events: none;">0</span>
+                    </button>
+                    
+                    <div id="notifDropdown" class="hidden" style="position: absolute; top: 55px; right: 0; width: 280px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #e5e7eb; z-index: 1000; overflow: hidden; text-align: left;">                        
+                        <div style="padding: 12px 16px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-weight: 600; font-size: 14px; color: #333;">Notifications</div>
+                        <div id="notifList" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+                
+                <div class="profile-wrapper" style="position: relative;">
+                    <img id="navPhoto" src="https://i.pravatar.cc/100?img=12" alt="Profile" class="profile-avatar profile-click" onclick="toggleProfileMenu()" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <div id="profileMenu" class="profile-menu hidden">
+                        <a href="profile.html">View Profile</a>
+                        <button onclick="logout()">Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            
+            <div class="video-column">
+                
+                <div class="coach-video-card">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800" alt="Coach Video" class="coach-video-placeholder">
+                    <div class="floating-subtitle-box" id="coachSubtitle">
+                        "Memuat sesi interview..."
+                    </div>
+                </div>
+
+                <div class="user-interaction-card">
+                    <div class="user-webcam-box" style="position: relative;">
+                        <video id="userCam" autoplay muted playsinline style="display: none; width: 100%; height: 100%; object-fit: cover;"></video>
+                        <div class="webcam-placeholder" id="camPlaceholder">Camera Off</div>
+                        
+                        <button id="cameraToggleBtn" class="cam-toggle-btn" title="Toggle Camera">
+                            <i class="fa-solid fa-video-slash" id="camIcon"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="user-controls-box">
+                        <h2>Giliran Kamu!</h2>
+                        <p>Bicara layaknya ngobrol dengan teman. Kamu juga bisa bertanya balik ke AI.</p>
+                        <button class="finish-btn" id="toggleRecordingBtn">
+                            <i class="fa-solid fa-microphone"></i> Mulai Bicara
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analytics-column">
+                
+                <div class="vibe-check-card">
+                    <div class="vibe-check-header">
+                        <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Vibe Check</h3>
+                        <span class="realtime-badge">REAL-TIME</span>
+                    </div>
+
+                    <div class="analytic-item">
+                        <div class="item-header">
+                            <i class="fa-regular fa-face-smile"></i> Confidence Level
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="confidenceBar" style="width: 50%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="analytic-item text-only">
+                        <div class="item-header">
+                            <i class="fa-solid fa-gauge-high"></i> Kecepatan Bicara: <span class="pace-status" id="paceStatus">Menunggu...</span>
+                        </div>
+                        <p>Kamu bicara di <span id="wpmValue">0</span> wpm. <span id="paceFeedback">Mulai bicara untuk analisis.</span></p>
+                    </div>
+
+                    <div class="tip-box">
+                        <i class="fa-regular fa-lightbulb tip-icon"></i>
+                        <p><span class="tip-title">Tip:</span> Anggap AI ini sebagai teman kerjamu. Ngobrol lepas aja, ceritakan detail yang menarik.</p>
+                    </div>
+                </div>
+
+                <div class="live-transcript-card">
+                    <div class="transcript-header">
+                        <h3><i class="fa-regular fa-file-alt"></i> Live Transcript</h3>
+                    </div>
+                    
+                    <div class="transcript-content" id="transcriptBox" style="max-height: 250px; overflow-y: auto;">
+                        <p class="transcript-entry coach-text">
+                            <span class="speaker-meta">COACH • 00:00</span><br>
+                            <span id="initialCoachTranscript">"Memuat transkrip..."</span>
+                        </p>
+                        
+                        <p class="transcript-entry user-text" id="activeTranscriptContainer" style="display: none;">
+                            <span class="speaker-meta">KAMU • <span id="userTimestamp">Baru saja</span></span><br>
+                            <i id="activeTranscriptText" style="color: #666;">Mendengarkan...</i>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    
+    // 1. SETTING FOTO PROFIL & NAMA USER (Melalui LocalStorage sebagai backup)
+    let firstName = "Kamu";
+    const storedUser = localStorage.getItem("careeroUser");
+    if (storedUser) {
+        const user = JSON.parse(storedUser);
+        const navPhoto = document.getElementById("navPhoto");
+        if (navPhoto && user.photo) {
+            navPhoto.src = user.photo;
+        }
+        if (user.name) {
+            firstName = user.name.split(" ")[0]; 
+        }
+    }
+    window.toggleProfileMenu = function() {
+        document.getElementById("profileMenu")?.classList.toggle("hidden");
+    }
+    window.logout = function() {
+        localStorage.clear();
+        window.location.href = "index.html";
+    }
+
+    // Update Sapaan Awal Sangat Santai
+    const initialGreeting = `Halo ${firstName}! Welcome to Careero Mock Interview. Panggil aku Olivia aja ya. Santai kok, anggap aja kita lagi ngopi bareng. Coba deh, ceritain sedikit kesibukan kamu akhir-akhir ini?`;
+    document.getElementById("coachSubtitle").innerHTML = `"${initialGreeting}"`;
+    document.getElementById("initialCoachTranscript").innerHTML = `"${initialGreeting}"`;
+
+    // 2. LOGIKA KAMERA 
+    const cameraToggleBtn = document.getElementById('cameraToggleBtn');
+    const userCam = document.getElementById('userCam');
+    const camPlaceholder = document.getElementById('camPlaceholder');
+    const camIcon = document.getElementById('camIcon');
+    let cameraStream = null;
+    let isCameraOn = false;
+
+    cameraToggleBtn.addEventListener('click', async () => {
+        if (!isCameraOn) {
+            if (camPlaceholder.innerText.includes("Error")) {
+                camPlaceholder.innerText = "Camera Off";
+                return;
+            }
+            try {
+                cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                userCam.srcObject = cameraStream;
+                userCam.style.display = 'block';
+                camPlaceholder.style.display = 'none';
+                isCameraOn = true;
+                camIcon.classList.replace('fa-video-slash', 'fa-video');
+                cameraToggleBtn.classList.add('active');
+            } catch (err) {
+                camPlaceholder.innerText = "Camera Error / Blocked";
+            }
+        } else {
+            if (cameraStream) cameraStream.getTracks().forEach(track => track.stop());
+            userCam.style.display = 'none';
+            camPlaceholder.style.display = 'flex';
+            camPlaceholder.innerText = "Camera Off";
+            isCameraOn = false;
+            camIcon.classList.replace('fa-video', 'fa-video-slash');
+            cameraToggleBtn.classList.remove('active');
+        }
+    });
+
+    // 3. LOGIKA AI & MICROPHONE
+    const toggleRecordingBtn = document.getElementById('toggleRecordingBtn');
+    const confidenceBar = document.getElementById('confidenceBar');
+    const wpmValue = document.getElementById('wpmValue');
+    const paceStatus = document.getElementById('paceStatus');
+    const paceFeedback = document.getElementById('paceFeedback');
+    
+    const transcriptBox = document.getElementById('transcriptBox');
+    const activeTranscriptContainer = document.getElementById('activeTranscriptContainer');
+    const activeTranscriptText = document.getElementById('activeTranscriptText');
+    const coachSubtitle = document.getElementById('coachSubtitle');
+    
+    let isRecording = false;
+    let speechRecognition = null;
+    let startTime;
+    let wordCount = 0;
+    let currentWPM = 0;
+    
+    let currentConfidence = 75; 
+    let nervousWarningCount = 0; 
+    let interactionCount = 0;
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        speechRecognition = new SpeechRecognition();
+        speechRecognition.continuous = true;
+        speechRecognition.interimResults = true; 
+        speechRecognition.lang = 'id-ID'; 
+
+        speechRecognition.onresult = function(event) {
+            let interimTranscript = '';
+            let finalTranscript = '';
+
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    finalTranscript += event.results[i][0].transcript;
+                } else {
+                    interimTranscript += event.results[i][0].transcript;
+                }
+            }
+            
+            const displayText = finalTranscript || interimTranscript;
+            if(displayText.trim().length > 0) {
+                activeTranscriptText.innerText = '"' + displayText + '"';
+                activeTranscriptText.style.fontStyle = 'normal';
+                activeTranscriptText.style.color = '#333';
+            }
+
+            wordCount = displayText.trim().split(/\s+/).filter(w => w.length > 0).length;
+            let timeElapsed = (Date.now() - startTime) / 1000 / 60; 
+            
+            if (timeElapsed > 0.05) { 
+                currentWPM = Math.round(wordCount / timeElapsed);
+                wpmValue.innerText = currentWPM;
+                
+                let isOptimal = (currentWPM >= 70 && currentWPM <= 135);
+                let isFast = (currentWPM > 135);
+
+                if (isOptimal) {
+                    currentConfidence += 1.5; 
+                    paceStatus.innerText = "Optimal"; 
+                    paceStatus.style.color = "#37521D";
+                    paceFeedback.innerText = "Kecepatan bicaramu enak didenger!";
+                } else {
+                    currentConfidence -= 1.5; 
+                    if (isFast) {
+                        paceStatus.innerText = "Cepat"; 
+                        paceStatus.style.color = "#dc2626";
+                        paceFeedback.innerText = "Santai sedikit, rasanya agak buru-buru.";
+                    } else {
+                        paceStatus.innerText = "Lambat"; 
+                        paceStatus.style.color = "#d97706";
+                        paceFeedback.innerText = "Bisa coba bicara sedikit lebih lancar.";
+                    }
+                }
+
+                currentConfidence = Math.min(100, Math.max(10, currentConfidence));
+                let displayConfidence = Math.min(100, Math.max(10, currentConfidence + (Math.random() * 4 - 2)));
+                confidenceBar.style.width = displayConfidence + "%";
+            }
+        };
+
+        speechRecognition.onerror = function(event) {
+            if(event.error === 'not-allowed') {
+                alert("Mikrofon diblokir. Pastikan kamu mengizinkan akses mikrofon di browser ya.");
+                stopRecordingLogic();
+            }
+        };
+    } else {
+        alert("Browser kamu belum dukung fitur suara otomatis. Coba pake Google Chrome.");
+    }
+
+    // Text to Speech
+    function aiSpeak(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'id-ID'; 
+            utterance.rate = 0.95; 
+            utterance.pitch = 1.3; 
+            
+            let voices = window.speechSynthesis.getVoices();
+            let idVoices = voices.filter(v => v.lang.includes('id'));
+            
+            if(idVoices.length > 0) {
+                let femaleVoice = idVoices.find(voice => 
+                    voice.name.toLowerCase().includes('female') || 
+                    voice.name.toLowerCase().includes('gadis') || 
+                    voice.name.toLowerCase().includes('susan') || 
+                    voice.name.toLowerCase().includes('online')
+                );
+                utterance.voice = femaleVoice || idVoices[0];
+            }
+
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = function() { window.speechSynthesis.getVoices(); };
+    }
+
+    // ==========================================
+    // LOGIKA PERCAKAPAN DINAMIS BERDASARKAN KEYWORD 
+    // ==========================================
+    function generateDynamicAIResponse(userText, wpm, confidence) {
+        let textLower = userText.toLowerCase();
+        let response = "";
+        interactionCount++;
+        
+        let isAsking = textLower.includes("?") || textLower.includes("gimana") || textLower.includes("bagaimana") || textLower.includes("apa ") || textLower.includes("tips") || textLower.includes("nanya");
+        
+        if (isAsking) {
+            if (textLower.includes("gugup") || textLower.includes("nervous") || textLower.includes("takut")) {
+                return `Hahaha wajar kok ngerasa gugup, ${firstName}! Tips dari aku sih: sebelum jawab, minum air putih dulu aja. Ingat, recruiter itu juga manusia kok. Nah, sekarang coba deh ceritain pencapaian terbesarmu sejauh ini.`;
+            } else if (textLower.includes("kultur") || textLower.includes("budaya") || textLower.includes("kerja")) {
+                return `Kalau soal kultur kerja, di sini kita fleksibel dan kekeluargaan banget, tapi tetap fokus ke target. Cocok nggak tuh sama gaya kerjamu yang biasa?`;
+            } else {
+                return `Wah, pertanyaan bagus banget, ${firstName}. Di interview asli, recruiter pasti seneng kalau kamu se-proaktif ini. Tapi buat sekarang, aku pengen denger dari sisi kamu dulu nih. Kalau kamu dikasih tanggung jawab baru yang belum pernah kamu kerjain, apa yang bakal kamu lakuin pertama kali?`;
+            }
+        }
+
+        let isHospitality = textLower.includes("pariwisata") || textLower.includes("hotel") || textLower.includes("tamu") || textLower.includes("pelayanan") || textLower.includes("service") || textLower.includes("wisata") || textLower.includes("f&b") || textLower.includes("restoran") || textLower.includes("customer");
+        let isTech = textLower.includes("data") || textLower.includes("coding") || textLower.includes("program") || textLower.includes("algoritma") || textLower.includes("software") || textLower.includes("web") || textLower.includes("aplikasi") || textLower.includes("pseudocode") || textLower.includes("array");
+
+        let isConfused = textLower.includes("gak tau") || textLower.includes("tidak tau") || textLower.includes("bingung") || textLower.includes("nggak tahu") || textLower.includes("kurang paham");
+        let isShort = userText.split(/\s+/).length < 5;
+
+        if (isConfused) {
+            return `Santai aja ${firstName}, nggak semua hal harus kita kuasai kok. Kalau gitu kita bahas yang kamu suka aja ya. Ada nggak project atau kegiatan terakhir yang bener-bener bikin kamu semangat ngerjainnya?`;
+        }
+
+        if (isShort) {
+            let shortResponses = [
+                `Oh, gitu. Boleh dielaborasi lagi nggak detail ceritanya gimana? Aku kepo nih.`,
+                `I see. Terus dari situ, hasilnya gimana tuh buat kamu atau buat tim?`,
+                `Singkat dan padat ya. Tapi coba dong ceritain proses di balik layarnya sedikit lagi, biar aku lebih kebayang.`
+            ];
+            return shortResponses[Math.floor(Math.random() * shortResponses.length)];
+        }
+
+        if (isHospitality) {
+            let hospResponses = [
+                `Wah, anak pariwisata atau perhotelan nih? Seru banget pasti ketemu banyak karakter orang. Pernah nggak kamu ngadepin tamu yang komplain parah banget? Terus cara kamu nge-handle biar dia tetep seneng gimana tuh?`,
+                `Dunia pelayanan itu kan capek banget ya secara fisik dan mental. Gimana sih cara kamu jaga mood dan tetap senyum ramah pas lagi under pressure?`,
+                `Menarik banget! Di hospitality, service excellence itu kan nomor satu. Bisa ceritain satu momen di mana kamu ngerasa ngasih pelayanan yang jauh melebihi ekspektasi customer?`
+            ];
+            response = hospResponses[Math.floor(Math.random() * hospResponses.length)];
+        } else if (isTech) {
+            let techResponses = [
+                `Wah, anak IT ya! Pantes. Kalau lagi fokus ngoding terus dapet error logika yang susah banget di-solve, biasanya step kamu buat debugging dan nyari jalan keluarnya gimana?`,
+                `Kerjaan teknis gitu kan butuh mikir dalem ya. Pernah nggak kamu harus kerja bareng tim desain atau marketing, terus gimana caramu ngejelasin hal teknis biar mereka gampang ngerti?`,
+                `Keren! Di dunia tech kan teknologi cepet banget usangnya. Cara kamu belajar hal baru atau framework baru biar tetep relevan itu gimana sih?`
+            ];
+            response = techResponses[Math.floor(Math.random() * techResponses.length)];
+        } else {
+            let generalResponses = [
+                `I see, paham. Nah, dari semua pengalaman itu, apa sih pelajaran paling berharga yang ngebentuk cara kerja kamu yang sekarang?`,
+                `Menarik ceritanya! Oh ya, pas lagi ada di dalem tim, biasanya kamu lebih nyaman ngambil peran sebagai apa? Leader yang ngarahin, eksekutor, atau yang ngasih ide?`,
+                `Wah keren. Pernah ada momen di mana kamu ngerasa gagal atau bikin kesalahan fatal nggak? Terus cara kamu tanggung jawab dan bangkit dari situ gimana?`,
+                `Paham-paham. Terus misalnya dalam tim ada beda pendapat yang lumayan alot, biasanya kamu nengahin masalahnya gimana tuh?`
+            ];
+            response = generalResponses[Math.floor(Math.random() * generalResponses.length)];
+        }
+
+        if (interactionCount >= 5) {
+            response = `Asik banget sebenernya ngobrol sama kamu ${firstName}, tapi kayaknya waktu simulasi kita udah habis nih. Makasih banyak ya buat waktunya, jawabannya keren-keren. Nanti cek feedback lengkapnya di dashboard ya!`;
+        }
+
+        let isNervous = (wpm > 150 || wpm < 50) || confidence < 50;
+        if (isNervous && nervousWarningCount < 1) {
+            nervousWarningCount++;
+            let nervousVariations = [
+                `Btw, pelan-pelan aja bicaranya ${firstName}, santai aja. Nah, `,
+                `Keliatannya kamu agak gugup ya? Rileks aja. Ngomong-ngomong, `
+            ];
+            let pickNervous = nervousVariations[Math.floor(Math.random() * nervousVariations.length)];
+            response = pickNervous + response.charAt(0).toLowerCase() + response.slice(1);
+        }
+
+        return response;
+    }
+
+    function stopRecordingLogic() {
+        isRecording = false;
+        toggleRecordingBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Mulai Bicara';
+        toggleRecordingBtn.style.backgroundColor = '#37521D';
+        
+        if (speechRecognition) {
+            try { speechRecognition.stop(); } catch(e){}
+        }
+
+        let rawUserText = activeTranscriptText.innerText.replace(/"/g, "");
+        if(rawUserText !== "Mendengarkan..." && rawUserText.trim() !== "") {
+            let userMsgHTML = `
+            <p class="transcript-entry user-text" style="margin-top: 15px;">
+                <span class="speaker-meta">KAMU • Baru saja</span><br>
+                "${rawUserText}"
+            </p>`;
+            activeTranscriptContainer.insertAdjacentHTML('beforebegin', userMsgHTML);
+        }
+        
+        activeTranscriptContainer.style.display = 'none';
+
+        setTimeout(() => {
+            let aiResponse = "";
+
+            if(rawUserText !== "Mendengarkan..." && rawUserText.trim() !== "") {
+                aiResponse = generateDynamicAIResponse(rawUserText, currentWPM, currentConfidence);
+            } else {
+                aiResponse = `Kok diam aja nih ${firstName}? Suaranya belum masuk lho. Ayo dong cerita sedikit.`;
+            }
+
+            coachSubtitle.innerHTML = `"${aiResponse}"`;
+
+            let aiMsgHTML = `
+            <p class="transcript-entry coach-text" style="margin-top: 15px;">
+                <span class="speaker-meta">COACH • Baru saja</span><br>
+                "${aiResponse}"
+            </p>`;
+            activeTranscriptContainer.insertAdjacentHTML('beforebegin', aiMsgHTML);
+            transcriptBox.scrollTop = transcriptBox.scrollHeight;
+
+            aiSpeak(aiResponse);
+        }, 1000);
+    }
+
+    toggleRecordingBtn.addEventListener('click', () => {
+        if (!isRecording) {
+            isRecording = true;
+            toggleRecordingBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Selesai Bicara';
+            toggleRecordingBtn.style.backgroundColor = '#d32f2f';
+            
+            startTime = Date.now();
+            wordCount = 0;
+            currentWPM = 0;
+            
+            currentConfidence = 75; 
+            
+            activeTranscriptContainer.style.display = 'block';
+            activeTranscriptText.innerText = "Mendengarkan...";
+            activeTranscriptText.style.fontStyle = 'italic';
+            activeTranscriptText.style.color = '#888';
+            transcriptBox.scrollTop = transcriptBox.scrollHeight;
+
+            if (speechRecognition) {
+                try { speechRecognition.start(); } catch(e){}
+            }
+        } else {
+            stopRecordingLogic();
+        }
+    });
+});
+</script>
+
+<script type="module">
+    import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDqzBgcZT_fXpFBbV76Vvkjpdt8M2q4C60",
+        authDomain: "careero-login.firebaseapp.com",
+        projectId: "careero-login",
+        storageBucket: "careero-login.firebasestorage.app",
+        messagingSenderId: "1034591118862",
+        appId: "1:1034591118862:web:40f6b99c07a64420c4fe5f"
+    };
+
+    const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            // --- BAGIAN PERBAIKAN: LISTENER NOTIFIKASI REAL-TIME ---
+            const notifRef = collection(db, "notifications");
+            const qNotif = query(notifRef, where("receiverId", "==", user.uid), where("isRead", "==", false));
+
+            onSnapshot(qNotif, (snapshot) => {
+                const bellIcon = document.getElementById('bellIcon'); 
+                const notifBadge = document.getElementById('notifBadge');
+                const notifList = document.getElementById('notifList');
+
+                let unreadCount = 0;
+                let generalNotifs = [];
+
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    // Filter agar notifikasi chat tidak masuk ke lonceng
+                    if (data.type !== "chat_message") {
+                        unreadCount++;
+                        generalNotifs.push(docSnap);
+                    }
+                });
+
+                if (bellIcon && notifBadge) {
+                    if (unreadCount > 0) {
+                        bellIcon.style.color = "#d11124"; 
+                        notifBadge.textContent = unreadCount;
+                        notifBadge.classList.remove('hidden');
+                    } else {
+                        bellIcon.style.color = "#666"; 
+                        notifBadge.classList.add('hidden');
+                    }
+                }
+
+                if (notifList) {
+                    notifList.innerHTML = ""; 
+                    if (generalNotifs.length === 0) {
+                        notifList.innerHTML = '<div style="padding: 16px; text-align: center; color: #777; font-size: 13px;">Belum ada notifikasi baru.</div>';
+                        return;
+                    }
+
+                    generalNotifs.forEach(async (docSnapshot) => {
+                        const notifData = docSnapshot.data();
+                        const notifId = docSnapshot.id;
+
+                        const senderRef = doc(db, "users", notifData.senderId);
+                        const senderSnap = await getDoc(senderRef);
+                        let senderName = "Seseorang";
+                        let senderPhoto = "https://i.pravatar.cc/150";
+                        
+                        if (senderSnap.exists()) {
+                            senderName = senderSnap.data().name || "User";
+                            senderPhoto = senderSnap.data().photo || senderPhoto;
+                        }
+
+                        const messageText = notifData.text || notifData.message || "Interaksi baru";
+                        const item = document.createElement("div");
+                        item.style.cssText = "display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer; align-items: center; transition: background 0.2s;";
+                        item.onmouseover = () => item.style.backgroundColor = "#f9fafb";
+                        item.onmouseout = () => item.style.backgroundColor = "transparent";
+
+                        item.innerHTML = `
+                            <img src="${senderPhoto}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 13px; font-weight: 600; color: #111;">${senderName}</span>
+                                <span style="font-size: 12px; color: #555;">${messageText}</span>
+                            </div>
+                        `;
+
+                        item.addEventListener("click", async () => {
+                            await updateDoc(doc(db, "notifications", notifId), { isRead: true });
+                            window.location.href = `public_profile.html?uid=${notifData.senderId}`;
+                        });
+                        notifList.appendChild(item);
+                    });
+                }
+            });
+
+            const bellIconToggleBtn = document.getElementById('bellIconToggleBtn');
+            const notifDropdown = document.getElementById('notifDropdown');
+
+            if (bellIconToggleBtn && notifDropdown) {
+                bellIconToggleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    notifDropdown.classList.toggle('hidden');
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                if (notifDropdown && !notifDropdown.classList.contains('hidden') && !notifDropdown.contains(e.target) && !bellIconToggleBtn.contains(e.target)) {
+                    notifDropdown.classList.add('hidden');
+                }
+            });
+
+            try {
+                const userDocRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(userDocRef);
+
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
+                    if (userData.photo) {
+                        const navPhoto = document.getElementById("navPhoto");
+                        if (navPhoto) {
+                            navPhoto.src = userData.photo;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Gagal menarik data profil untuk ai coaching:", error);
+            }
+        }
+    });
+</script>
+<script src="theme.js"></script>
+
+</body>
+</html>

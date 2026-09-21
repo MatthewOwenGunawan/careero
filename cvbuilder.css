@@ -1,0 +1,417 @@
+body {
+    display: block;     
+    padding: 0;         
+    margin: 0;
+    background-color: #f5f5f2; 
+}
+
+.cv-page {
+    display: flex;
+    min-height: 100vh;
+    background: #f5f5f2;
+    width: 100%;         
+}
+
+.cv-page .main-content {
+    flex: 1;
+    padding: 30px;
+    background: #f5f5f2;
+    min-height: 100vh;
+    margin: 0 !important;
+    width: 100%;         
+}
+
+.cv-page {
+    display: flex;
+    min-height: 100vh;
+    background: #f5f5f2;
+}
+
+.cv-page .main-content {
+    flex: 1;
+    padding: 30px;
+    background: #f5f5f2;
+    min-height: 100vh;
+    margin: 0 !important;
+}
+
+.topbar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.horizontal-menu {
+    display: flex;
+    gap: 24px;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.horizontal-menu a {
+    text-decoration: none;
+    color: #666;
+    transition: 0.2s;
+}
+
+.horizontal-menu a:hover {
+    color: #2f6b10;
+}
+
+.horizontal-menu a.active {
+    color: #2f6b10;
+    border-bottom: 2px solid #2f6b10;
+    padding-bottom: 4px;
+}
+
+.page-title h1 {
+    font-size: 48px;
+    font-weight: 700;
+    color: #2f6b10;
+    margin: 0;
+}
+
+.page-title p {
+    margin-top: 8px;
+    color: #666;
+    font-size: 14px;
+}
+
+.preview-btn,
+.download-btn {
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.preview-btn {
+    background: white;
+    border: 1px solid #6f9d2d;
+    color: #2f6b10;
+}
+
+.download-btn {
+    border: none;
+    background: #6f9d2d;
+    color: white;
+}
+
+.preview-btn:hover {
+    background: #f5f5f2;
+}
+
+.download-btn:hover {
+    background: #5b8224;
+}
+
+.cv-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.cv-editor,
+.cv-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.cv-card,
+.score-card,
+.coach-card {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    margin: 0;
+}
+
+.add-entry-btn {
+    border: none;
+    background: transparent;
+    color: #6f9d2d;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field label {
+    color: #666;
+    font-size: 13px;
+}
+
+.field input,
+.field textarea {
+    border: none;
+    outline: none;
+    background: #f3f4ef;
+    border-radius: 16px;
+    padding: 14px 16px;
+    font-size: 14px;
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+#skillTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skill-tag {
+    background: #e9f4d7;
+    color: #4e7b14;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.skill-tag i {
+    transition: 0.2s;
+}
+
+.skill-tag i:hover {
+    color: #2f6b10;
+}
+
+.add-skill-btn {
+    background: transparent;
+    border: 2px dashed #cfcfcf;
+    border-radius: 999px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.add-skill-btn:hover {
+    border-color: #6f9d2d;
+    color: #6f9d2d;
+}
+
+.score-card {
+    text-align: center;
+    position: relative;
+}
+
+.score-label {
+    display: block;
+    color: #999;
+    letter-spacing: 3px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.score-circle {
+    width: 160px;
+    height: 160px;
+    border: 8px solid #6f9d2d;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.score-circle h2 {
+    margin: 0;
+    font-size: 48px;
+    color: #2f6b10;
+}
+
+.score-circle span {
+    color: #666;
+}
+
+.score-card p {
+    margin: 0;
+    color: #555;
+    line-height: 1.5;
+}
+
+.coach-card {
+    border: 1.5px solid #8db33d;
+}
+
+.coach-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.coach-header img {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.coach-header h4 {
+    margin: 0;
+}
+
+.coach-header small {
+    color: #777;
+}
+
+.ai-badge {
+    display: inline-block;
+    background: #2f6b10;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.coach-message {
+    margin: 18px 0;
+    background: #f5f5f2;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.coach-message strong {
+    color: #2f6b10; 
+}
+
+.coach-tips {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.fix-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: 1px solid #6f9d2d; 
+    border-radius: 999px;
+    background: transparent;   
+    color: #6f9d2d;            
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.fix-btn:hover {
+    background: #e9f4d7; 
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.search-guides {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 12px 16px;
+    border-radius: 999px;
+    min-width: 240px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.search-guides i {
+    color: #888;
+}
+
+.search-guides input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    font-size: 14px;
+}
+
+.icon-btn {
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: 0.2s;
+}
+
+.icon-btn:hover {
+    background: #f5f5f2;
+}
+
+.icon-btn i {
+    font-size: 18px;
+    color: #555;
+}
+
+.profile-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 1000px) {
+    .cv-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .topbar-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+}
