@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Careero Profile</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="profileStyle.css" />
+    <link rel="stylesheet" href="theme.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+        body {
+            display: block; 
+            padding: 0;
+            margin: 0;
+            background-color: #f7f8f5; 
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="profile-container">
+
+    <header class="profile-navbar">
+        <div class="profile-logo">
+            <h2>Careero</h2>
+        </div>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="cvbuilder.html">CV Builder</a>
+            <a href="jobmatch.html">Job Match</a>
+            <a href="ai_coaching.html">AI Coaching</a>
+        </nav>
+        <div class="profile-nav-icons" style="display: flex; align-items: center; gap: 20px;">
+            
+            <div class="notif-wrapper" style="position: relative; display: flex; align-items: center;">
+                <i class="fa-regular fa-bell" id="bellIcon" style="transition: color 0.3s ease; cursor: pointer; font-size: 20px;"></i>
+                <span id="notifBadge" class="hidden" style="position: absolute; top: -6px; right: -8px; background-color: #d11124; color: white; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 50%;">0</span>
+                
+                <div id="notifDropdown" class="hidden" style="position: absolute; top: 35px; right: -80px; width: 280px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #e5e7eb; z-index: 1000; overflow: hidden; text-align: left;">
+                    <div style="padding: 12px 16px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-weight: 600; font-size: 14px; color: #333;">
+                        Notifications
+                    </div>
+                    <div id="notifList" style="max-height: 300px; overflow-y: auto;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-wrapper" style="position: relative;">
+                <img
+                id="navPhoto"
+                src="https://i.pravatar.cc/100?img=12"
+                class="profile-click"
+                onclick="toggleProfileMenu()"
+                alt="Profile"
+                style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover; cursor: pointer;"
+                />
+                <div id="profileMenu" class="profile-menu hidden" style="position: absolute; right: 0; top: 45px; background: white; border: 1px solid #e5e7eb; border-radius: 8px; width: 150px; z-index: 1000;">
+                    <a href="dashboard.html" style="display: block; padding: 10px 15px; text-decoration: none; color: #333;">View Dashboard</a>
+                    <button onclick="logout()" style="width: 100%; border: none; background: none; text-align: left; padding: 10px 15px; cursor: pointer; color: #d11124;">Log Out</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="profile-grid">
+
+        <div class="left-column">
+            <div class="profile-card" style="flex-wrap: wrap;">
+                
+                <div class="profile-avatar-wrapper">
+                    <img
+                        id="profilePhoto"
+                        src="https://i.pravatar.cc/150?img=12"
+                        class="profile-avatar"
+                        alt="Profile"
+                    />
+                    <div class="edit-badge" id="editPhotoBtn" style="cursor: pointer;">
+                        <i class="fa-solid fa-pen"></i>
+                    </div>
+                </div>
+                
+                <div class="profile-info">
+                    <h2 id="myProfileName">Memuat nama...</h2>
+                    <p id="profileRole">Data Science Student</p>
+                    <div class="profile-tags">
+                        <span class="location-tag">
+                            <i class="fa-solid fa-location-dot"></i> Jakarta, ID
+                        </span>
+                        <span class="open-tag">Open To Work</span>
+                    </div>
+
+                    <div style="margin-top: 10px;">
+                        <a href="#" id="connectionCount" style="color: #0a66c2; font-weight: 600; font-size: 14px; text-decoration: none; transition: text-decoration 0.2s;">
+                            <i class="fa-solid fa-spinner fa-spin" style="font-size: 12px;"></i> Memuat koneksi...
+                        </a>
+                    </div>
+
+                    <div class="profile-actions" style="margin-top: 12px;">
+                        <button class="primary-btn">Share Profile</button>
+                        <button class="secondary-btn">Connections</button>
+                    </div>
+                </div>
+
+                <div class="profile-about-me" style="flex-basis: 100%; grid-column: 1 / -1; width: 100%; margin-top: 20px; padding-top: 16px; border-top: 1px solid #e5e7eb; text-align: left;">
+                    <h4 style="margin: 0 0 8px 0; font-size: 15px; color: #333;">About</h4>
+                    <p id="profileAboutText" style="color: #555; font-size: 14px; line-height: 1.6; margin: 0;">Belum ada deskripsi About Me. Klik ikon pensil untuk menambahkan.</p>
+                </div>
+                
+            </div>
+
+            <div class="progress-card">
+                <h3>Career Progress</h3>
+                <div class="progress-stats">
+                    <div class="stat-box">
+                        <strong>0</strong><p>Applications</p>
+                    </div>
+                    <div class="stat-box highlight-box">
+                        <strong>0</strong><p>Interviews</p>
+                    </div>
+                    <div class="stat-box">
+                        <strong>0</strong><p>Offers</p>
+                    </div>
+                </div>
+                <div class="readiness-wrapper">
+                    <span>Dream Job Readiness</span>
+                    <strong id="readinessText">0%</strong>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="readinessBar" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
+                </div>
+            </div>
+
+            <div class="education-card">
+                <div class="skills-header">
+                    <h3>Education</h3>
+                </div>
+                <div id="educationList"></div>
+                <button id="addEducationBtn">+ Add Education</button>
+            </div>
+
+            <div class="education-card">
+                <div class="skills-header">
+                    <h3>Interests</h3>
+                </div>
+                <div id="interestList">
+                    <p style="color: #888; font-size: 13px;">Memuat data...</p>
+                </div>
+                <button id="addInterestBtn">+ Add Interest</button>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="ai-chatbot-card">
+                <div class="chatbot-header-modern">
+                    <div class="chatbot-left">
+                        <div class="chatbot-ai-icon">
+                            <img src="asset/lucky boy.png" alt="AI Bot" class="chatbot-avatar-full">
+                        </div>
+                        <div class="chatbot-info">
+                            <h3>Lucky boy</h3>
+                            <p>Your AI-powered career companion for job discovery, resume optimization, and interview success.</p>
+                        </div>
+                    </div>
+                    <button class="chatbot-menu-btn">
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </button>
+                </div>
+                <div id="chatMessages" class="chat-messages"></div>
+                <div class="chat-suggestions">
+                    <button class="suggestion-btn">✨ Skill untuk Data Scientist</button>
+                    <button class="suggestion-btn">🚀 Roadmap Frontend Developer</button>
+                    <button class="suggestion-btn">💼 Tips interview kerja</button>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Tanya sesuatu..." />
+                    <button id="sendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+
+            <div class="skills-card">
+                <div class="skills-header">
+                    <h3>Skills</h3>
+                    <small>click to remove</small>
+                </div>
+                <div id="skillList">
+                    <p style="color: #888; font-size: 13px;">Memuat data...</p>
+                </div>
+                <button id="addSkillBtn">+ Add New Skill</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="educationModal" class="linkedin-modal hidden">
+    <div class="linkedin-modal-content">
+        <div class="linkedin-modal-header">
+            <h2>Add education</h2>
+            <button class="linkedin-close-btn" onclick="closeEduModal()">&times;</button>
+        </div>
+        <form id="addEduForm">
+            <div class="linkedin-form-group">
+                <label for="eduModalSchool">School*</label>
+                <input type="text" id="eduModalSchool" placeholder="Ex: Bina Nusantara University" required autocomplete="off" />
+                <div id="eduSuggestBox" class="suggest-box hidden"></div>
+            </div>
+            <div class="linkedin-form-group">
+                <label for="eduModalDegree">Degree</label>
+                <input type="text" id="eduModalDegree" placeholder="Ex: Data Science" />
+            </div>
+            <div class="linkedin-form-row">
+                <div class="linkedin-form-group">
+                    <label for="eduModalStart">Start Year</label>
+                    <input type="text" id="eduModalStart" placeholder="Ex: 2024" />
+                </div>
+                <div class="linkedin-form-group">
+                    <label for="eduModalEnd">End Year</label>
+                    <input type="text" id="eduModalEnd" placeholder="Ex: 2028" />
+                </div>
+            </div>
+            <div class="linkedin-form-group">
+                <label for="eduModalDesc">Description</label>
+                <textarea id="eduModalDesc" rows="3" placeholder="Describe your studies, projects, or thesis"></textarea>
+            </div>
+            <div class="linkedin-modal-footer">
+                <button type="submit" class="linkedin-btn-save">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="editProfileModal" class="linkedin-modal hidden">
+    <div class="linkedin-modal-content">
+        <div class="linkedin-modal-header">
+            <h2>Edit Intro</h2>
+            <button class="linkedin-close-btn" onclick="closeEditProfileModal()">&times;</button>
+        </div>
+        <form id="editProfileForm">
+            <div class="linkedin-form-group" style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 20px;">
+                <img id="modalProfilePreview" src="https://i.pravatar.cc/150" alt="Preview" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #e5e7eb;">
+                <button type="button" id="changePhotoBtn" style="background: white; border: 1px solid #4A7C2C; color: #4A7C2C; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600;">
+                    <i class="fa-solid fa-camera"></i> Change Photo
+                </button>
+                <input type="file" id="uploadPhotoInput" accept="image/*" style="display: none;" />
+            </div>
+            
+            <div class="linkedin-form-group">
+                <label for="editRoleInput" style="font-weight: 600;">Headline / Role</label>
+                <input type="text" id="editRoleInput" placeholder="Ex: Data Science Student at BINUS University" required autocomplete="off" />
+            </div>
+
+            <div class="linkedin-form-group">
+                <label for="editAboutInput" style="font-weight: 600;">About</label>
+                <textarea id="editAboutInput" rows="4" placeholder="Ceritakan sedikit tentang dirimu, pengalaman, dan minatmu..."></textarea>
+            </div>
+
+            <div class="linkedin-modal-footer">
+                <button type="submit" class="linkedin-btn-save" id="saveProfileBtn">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script src="chatbot.js"></script>
+
+<script>
+function toggleProfileMenu() {
+    document.getElementById("profileMenu")?.classList.toggle("hidden");
+}
+
+document.addEventListener("click", function (e) {
+    const menu = document.getElementById("profileMenu");
+    const img = document.querySelector(".profile-click");
+    if (!menu || !img) return;
+    if (!menu.contains(e.target) && e.target !== img) {
+        menu.classList.add("hidden");
+    }
+});
+
+function closeEduModal() {
+    const eduModal = document.getElementById("educationModal");
+    if (eduModal) {
+        eduModal.classList.add("hidden");
+        document.getElementById("addEduForm").reset();
+    }
+}
+
+function closeEditProfileModal() {
+    const editModal = document.getElementById("editProfileModal");
+    if (editModal) {
+        editModal.classList.add("hidden");
+    }
+}
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const localData = localStorage.getItem("careeroUser");
+        if (localData) {
+            const userData = JSON.parse(localData);
+            
+            const profilePhoto = document.getElementById("profilePhoto");
+            const navPhoto = document.getElementById("navPhoto");
+            const profileName = document.getElementById("myProfileName");
+
+            if (profilePhoto && userData.photo) profilePhoto.src = userData.photo;
+            if (navPhoto && userData.photo) navPhoto.src = userData.photo;
+            if (profileName && userData.name) profileName.textContent = userData.name;
+        }
+    });
+</script>
+
+<script type="module">
+    import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, updateDoc, getDoc, setDoc, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDqzBgcZT_fXpFBbV76Vvkjpdt8M2q4C60",
+        authDomain: "careero-login.firebaseapp.com",
+        projectId: "careero-login",
+        storageBucket: "careero-login.firebasestorage.app",
+        messagingSenderId: "1034591118862",
+        appId: "1:1034591118862:web:40f6b99c07a64420c4fe5f"
+    };
+
+    const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.auth = auth;
+    window.db = db;
+    window.doc = doc;
+    window.getDoc = getDoc;
+    window.updateDoc = updateDoc;
+    window.setDoc = setDoc;
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) return; 
+
+        const notifRef = collection(db, "notifications");
+        const qNotif = query(notifRef, where("receiverId", "==", user.uid), where("isRead", "==", false));
+
+        onSnapshot(qNotif, (snapshot) => {
+            const unreadCount = snapshot.size;
+            const bellIcon = document.getElementById('bellIcon'); 
+            const notifBadge = document.getElementById('notifBadge');
+            const notifList = document.getElementById('notifList');
+
+            if (bellIcon && notifBadge) {
+                if (unreadCount > 0) {
+                    bellIcon.style.color = "#d11124"; 
+                    notifBadge.textContent = unreadCount;
+                    notifBadge.classList.remove('hidden');
+                } else {
+                    bellIcon.style.color = "inherit"; 
+                    notifBadge.classList.add('hidden');
+                }
+            }
+
+            if (notifList) {
+                notifList.innerHTML = ""; 
+                
+                if (snapshot.empty) {
+                    notifList.innerHTML = '<div style="padding: 16px; text-align: center; color: #777; font-size: 13px;">Belum ada notifikasi baru.</div>';
+                    return;
+                }
+
+                snapshot.forEach(async (docSnapshot) => {
+                    const notifData = docSnapshot.data();
+                    const notifId = docSnapshot.id;
+
+                    const senderRef = doc(db, "users", notifData.senderId);
+                    const senderSnap = await getDoc(senderRef);
+                    let senderName = "Seseorang";
+                    let senderPhoto = "https://i.pravatar.cc/150";
+                    
+                    if (senderSnap.exists()) {
+                        senderName = senderSnap.data().name || "User";
+                        senderPhoto = senderSnap.data().photo || senderPhoto;
+                    }
+
+                    const item = document.createElement("div");
+                    item.style.cssText = "display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer; align-items: center; transition: background 0.2s;";
+                    item.onmouseover = () => item.style.backgroundColor = "#f9fafb";
+                    item.onmouseout = () => item.style.backgroundColor = "transparent";
+
+                    item.innerHTML = `
+                        <img src="${senderPhoto}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 13px; font-weight: 600; color: #111;">${senderName}</span>
+                            <span style="font-size: 12px; color: #555;">Mengirim permintaan koneksi</span>
+                        </div>
+                    `;
+
+                    item.addEventListener("click", async () => {
+                        await updateDoc(doc(db, "notifications", notifId), {
+                            isRead: true
+                        });
+                        window.location.href = `public_profile.html?uid=${notifData.senderId}`;
+                    });
+
+                    notifList.appendChild(item);
+                });
+            }
+        });
+
+        const bellIconToggle = document.getElementById('bellIcon');
+        const notifDropdown = document.getElementById('notifDropdown');
+
+        if (bellIconToggle && notifDropdown) {
+            bellIconToggle.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                notifDropdown.classList.toggle('hidden');
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (notifDropdown && !notifDropdown.classList.contains('hidden') && !notifDropdown.contains(e.target) && e.target !== bellIconToggle) {
+                notifDropdown.classList.add('hidden');
+            }
+        });
+
+        const userDocRef = doc(db, "users", user.uid);
+        
+        const docSnap = await getDoc(userDocRef);
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            
+            if (userData.photo) {
+                const profilePhoto = document.getElementById("profilePhoto");
+                const navPhoto = document.getElementById("navPhoto");
+                if (profilePhoto) profilePhoto.src = userData.photo;
+                if (navPhoto) navPhoto.src = userData.photo;
+            }
+            
+            if (userData.role) {
+                const profileRole = document.getElementById("profileRole");
+                if (profileRole) profileRole.textContent = userData.role;
+            }
+
+            if (userData.about) {
+                const profileAboutText = document.getElementById("profileAboutText");
+                if (profileAboutText) {
+                    profileAboutText.textContent = userData.about;
+                }
+            }
+        }
+
+        let globalSkillsCount = 0;
+        let globalInterestsCount = 0;
+
+        function updateReadinessScore() {
+            let total = 0 + (globalSkillsCount * 15) + (globalInterestsCount * 10);
+            
+            if (total > 100) total = 100;
+
+            const readinessText = document.getElementById("readinessText");
+            const readinessBar = document.getElementById("readinessBar");
+            
+            if (readinessText) readinessText.textContent = total + "%";
+            if (readinessBar) readinessBar.style.width = total + "%";
+        }
+
+        async function setupFirebaseList(fieldDB, listId, btnId, placeholder) {
+            const list = document.getElementById(listId);
+            const btn = document.getElementById(btnId);
+            if (!list || !btn) return;
+
+            let items = [];
+            if (docSnap.exists() && docSnap.data()[fieldDB]) {
+                items = docSnap.data()[fieldDB];
+            }
+
+            if (fieldDB === "skills") globalSkillsCount = items.length;
+            if (fieldDB === "interests") globalInterestsCount = items.length;
+            updateReadinessScore();
+
+            const createPill = (text) => {
+                const span = document.createElement("span");
+                span.className = "skill-pill";
+                span.style.cssText = "padding: 6px 14px; background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 20px; font-size: 14px; cursor: pointer; display: inline-block; margin: 4px;";
+                span.textContent = text;
+
+                span.onclick = async () => {
+                    if (confirm(`Hapus "${text}" dari profilmu?`)) {
+                        span.style.opacity = "0.5"; 
+                        items = items.filter(item => item !== text);
+                        
+                        if (fieldDB === "skills") globalSkillsCount = items.length;
+                        if (fieldDB === "interests") globalInterestsCount = items.length;
+                        updateReadinessScore();
+
+                        try {
+                            await setDoc(userDocRef, { [fieldDB]: items }, { merge: true });
+                            span.remove(); 
+                        } catch (err) {
+                            alert("Gagal menghapus data.");
+                            span.style.opacity = "1";
+                        }
+                    }
+                };
+                return span;
+            };
+
+            list.innerHTML = "";
+            if (items.length === 0) {
+                list.innerHTML = `<p style="color: #888; font-size: 13px;">Belum ada data ditambahkan.</p>`;
+            } else {
+                items.forEach(i => list.appendChild(createPill(i)));
+            }
+
+            btn.onclick = async () => {
+                const val = prompt(placeholder);
+                if (!val?.trim()) return;
+                const newText = val.trim();
+
+                if (items.includes(newText)) {
+                    alert(`${newText} sudah ada di daftar!`);
+                    return;
+                }
+
+                if (items.length === 0) list.innerHTML = "";
+
+                const tempSpan = createPill(newText + " (menyimpan...)");
+                list.appendChild(tempSpan);
+
+                items.push(newText);
+                
+                if (fieldDB === "skills") globalSkillsCount = items.length;
+                if (fieldDB === "interests") globalInterestsCount = items.length;
+                updateReadinessScore();
+
+                try {
+                    await setDoc(userDocRef, { [fieldDB]: items }, { merge: true });
+                    tempSpan.textContent = newText; 
+                } catch (err) {
+                    alert("Gagal menyimpan data ke server.");
+                    tempSpan.remove();
+                    items.pop(); 
+                }
+            };
+        }
+
+        setupFirebaseList("skills", "skillList", "addSkillBtn", "Masukkan nama skill (Contoh: UI/UX Design):");
+        setupFirebaseList("interests", "interestList", "addInterestBtn", "Masukkan minat (Contoh: Machine Learning):");
+    });
+
+    const editPhotoBtn = document.getElementById("editPhotoBtn");
+    const editProfileModal = document.getElementById("editProfileModal");
+    const editProfileForm = document.getElementById("editProfileForm");
+    
+    const profilePhoto = document.getElementById("profilePhoto");
+    const navPhoto = document.getElementById("navPhoto");
+    const profileRole = document.getElementById("profileRole");
+    const profileAboutText = document.getElementById("profileAboutText"); 
+    
+    const changePhotoBtn = document.getElementById("changePhotoBtn");
+    const uploadPhotoInput = document.getElementById("uploadPhotoInput");
+    const modalProfilePreview = document.getElementById("modalProfilePreview");
+    const editRoleInput = document.getElementById("editRoleInput");
+    const editAboutInput = document.getElementById("editAboutInput"); 
+    const saveProfileBtn = document.getElementById("saveProfileBtn");
+
+    if (editPhotoBtn) {
+        editPhotoBtn.addEventListener("click", () => {
+            editProfileModal.classList.remove("hidden");
+            editRoleInput.value = profileRole.textContent; 
+            modalProfilePreview.src = profilePhoto.src; 
+            
+            const currentAbout = profileAboutText.textContent;
+            editAboutInput.value = currentAbout.includes("Belum ada deskripsi") ? "" : currentAbout;
+        });
+    }
+
+    if (changePhotoBtn && uploadPhotoInput) {
+        changePhotoBtn.addEventListener("click", () => uploadPhotoInput.click());
+
+        uploadPhotoInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 800 * 1024) {
+                alert("Ukuran foto terlalu besar! Maksimal 800 KB.");
+                uploadPhotoInput.value = "";
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                modalProfilePreview.src = reader.result; 
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    if (editProfileForm) {
+        editProfileForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Sesi login tidak terdeteksi. Silakan refresh halaman.");
+                return;
+            }
+
+            const newRole = editRoleInput.value.trim();
+            const newAbout = editAboutInput.value.trim();
+            const newPhotoBase64 = modalProfilePreview.src;
+
+            saveProfileBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+            saveProfileBtn.disabled = true;
+
+            try {
+                const userDocRef = doc(db, "users", user.uid);
+                
+                await setDoc(userDocRef, { 
+                    role: newRole, 
+                    about: newAbout,
+                    photo: newPhotoBase64 
+                }, { merge: true });
+
+                profileRole.textContent = newRole;
+                if (profileAboutText) {
+                    profileAboutText.textContent = newAbout !== "" ? newAbout : "Belum ada deskripsi About Me. Klik ikon pensil untuk menambahkan.";
+                }
+                if (profilePhoto) profilePhoto.src = newPhotoBase64;
+                if (navPhoto) navPhoto.src = newPhotoBase64;
+
+                const localData = JSON.parse(localStorage.getItem("careeroUser")) || {};
+                localData.photo = newPhotoBase64;
+                localStorage.setItem("careeroUser", JSON.stringify(localData));
+
+                closeEditProfileModal();
+
+            } catch (error) {
+                console.error("Gagal update profil:", error);
+                alert("Gagal memperbarui profil: " + error.message);
+            } finally {
+                saveProfileBtn.innerHTML = 'Save Changes';
+                saveProfileBtn.disabled = false;
+            }
+        });
+    }
+</script>
+
+<script type="module" src="connections.js"></script>
+<script src="theme.js"></script>
+
+</body>
+</html>
