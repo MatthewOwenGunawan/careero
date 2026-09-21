@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careero Login</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="left-panel">
+
+        <div class="illustration-box">
+            <img src="asset/working hard.jpg" alt="Workspace Illustration">
+        </div>
+
+        <h2>Find the career you deserve</h2>
+
+        <p>
+            Join thousands of professionals finding clarity in their career transitions with Careero.
+        </p>
+
+    </div>
+
+    <div class="right-panel">
+
+        <div class="form-wrapper">
+
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+                <span>Careero</span>
+            </div>
+
+            <h1>Login</h1>
+
+            <p class="subtitle">
+                Please enter your details to continue
+            </p>
+
+            <form id="loginForm">
+
+                <div class="input-group">
+                    <label>Email address</label>
+                    <input 
+                        type="email" 
+                        id="loginEmail"
+                        placeholder="name@example.com" 
+                        required>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="passwordInput"
+                            placeholder="••••••••" 
+                            required>
+
+                        <i class="fa-solid fa-eye" id="togglePassword"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-signin">
+                    Sign In →
+                </button>
+
+            </form>
+
+            <div class="divider">
+                <span>OR SIGN IN WITH</span>
+            </div>
+
+            <div class="sso-buttons">
+
+                <button type="button" class="btn-sso" onclick="loginGoogle()">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg">
+                </button>
+
+                <button type="button" class="btn-sso" onclick="loginGithub()">
+                    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
+                </button>
+
+            </div>
+
+            <div class="footer-links center-text">
+                <p>
+                    Don't have an account?
+                    <a href="signup.html" class="create-acc">
+                        Create Account
+                    </a>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const passInput = document.getElementById("passwordInput");
+    const toggleIcon = document.getElementById("togglePassword");
+
+    if (passInput && toggleIcon) {
+        toggleIcon.addEventListener("click", () => {
+            const isHidden = passInput.type === "password";
+            passInput.type = isHidden ? "text" : "password";
+
+            toggleIcon.classList.toggle("fa-eye");
+            toggleIcon.classList.toggle("fa-eye-slash");
+        });
+    }
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+    getAuth,
+    GoogleAuthProvider,
+    GithubAuthProvider,
+    signInWithPopup,
+    signInWithEmailAndPassword 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDqzBgcZT_fXpFBbV76Vvkjpdt8M2q4C60",
+    authDomain: "careero-login.firebaseapp.com",
+    projectId: "careero-login",
+    storageBucket: "careero-login.firebasestorage.app",
+    messagingSenderId: "1034591118862",
+    appId: "1:1034591118862:web:40f6b99c07a64420c4fe5f",
+    measurementId: "G-M0M6W3HXNN"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
+githubProvider.addScope('user:email');
+
+function saveUser(user) {
+    localStorage.setItem("careeroUser", JSON.stringify(user));
+}
+
+document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("passwordInput").value;
+    const submitBtn = e.target.querySelector("button[type='submit']");
+    const originalText = submitBtn.innerText;
+
+    try {
+        submitBtn.innerText = "Signing in...";
+        submitBtn.disabled = true;
+
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        const displayName = user.displayName || email.split('@')[0];
+        const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=c4e5a5&color=111827&bold=true`;
+
+        saveUser({
+            name: displayName,
+            email: user.email,
+            photo: user.photoURL || defaultAvatar
+        });
+
+        window.location.href = "dashboard.html";
+
+    } catch (err) {
+        console.error("Login Error:", err);
+        if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+            alert("Email atau password yang Anda masukkan salah!");
+        } else {
+            alert("Gagal login: " + err.message);
+        }
+    } finally {
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+window.loginGoogle = async function () {
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+
+        saveUser({
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL
+        });
+
+        window.location.href = "dashboard.html";
+
+    } catch (err) {
+        console.error(err);
+        if (err.code !== 'auth/popup-closed-by-user') {
+            alert("Google Login gagal");
+        }
+    }
+};
+
+window.loginGithub = async function () {
+    try {
+        const result = await signInWithPopup(auth, githubProvider);
+        const user = result.user;
+
+        saveUser({
+            name: user.displayName || user.email,
+            email: user.email || "github-user",
+            photo: user.photoURL
+        });
+
+        window.location.href = "dashboard.html";
+
+    } catch (err) {
+        console.error(err);
+        if (err.code !== 'auth/popup-closed-by-user') {
+            alert("GitHub Login gagal");
+        }
+    }
+};
+
+</script>
+
+</body>
+</html>
