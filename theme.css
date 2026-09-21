@@ -1,0 +1,309 @@
+:root {
+    --bg-body: #f5f5f2;
+    --bg-card: #ffffff;
+    --text-main: #111111;
+    --text-muted: #666666;
+    --border-color: #e5e7eb;
+    --sidebar-bg: #f8f9f6;
+}
+
+body.dark-mode {
+    --bg-body: #171916;  
+    --bg-card: #222520;  
+    --text-main: #e8eae6; 
+    --text-muted: #9ca3af;
+    --border-color: #333831;
+    --sidebar-bg: #1c1e1a;
+}
+
+body.dark-mode ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+body.dark-mode ::-webkit-scrollbar-track {
+    background: var(--bg-body); 
+}
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--border-color); 
+    border-radius: 10px;
+}
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #666666; 
+}
+
+
+body.dark-mode {
+    background-color: var(--bg-body) !important;
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .main-content, 
+body.dark-mode .profile-container {
+    background-color: var(--bg-body) !important;
+}
+
+body.dark-mode .sidebar {
+    background-color: var(--sidebar-bg) !important;
+    border-right-color: var(--border-color) !important;
+}
+
+body.dark-mode .sidebar-menu a {
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .sidebar-menu a:hover {
+    background-color: #2c3029 !important;
+}
+
+body.dark-mode .job-card, 
+body.dark-mode .stats-card, 
+body.dark-mode .profile-card, 
+body.dark-mode .education-card, 
+body.dark-mode .skills-card, 
+body.dark-mode .ai-chatbot-card, 
+body.dark-mode .cv-card,
+body.dark-mode .score-card,
+body.dark-mode .coach-card,
+body.dark-mode .coach-video-card,
+body.dark-mode .user-interaction-card,
+body.dark-mode .vibe-check-card,
+body.dark-mode .live-transcript-card,
+body.dark-mode .candidate-btn,
+body.dark-mode .interview-card,
+body.dark-mode .improve-card {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode p, 
+body.dark-mode span, 
+body.dark-mode .subtitle,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode label {
+    color: var(--text-main) !important; 
+}
+
+body.dark-mode p,
+body.dark-mode .text-muted,
+body.dark-mode .coach-tips span {
+    color: var(--text-muted) !important;
+}
+
+body.dark-mode #profileAboutText,
+body.dark-mode #publicAboutText {
+    color: var(--text-muted) !important;
+}
+
+body.dark-mode .horizontal-menu a,
+body.dark-mode .profile-navbar nav a {
+    color: var(--text-main) !important; 
+}
+
+body.dark-mode .horizontal-menu a.active,
+body.dark-mode .profile-navbar nav a:hover {
+    color: #a8d575 !important; 
+    border-bottom-color: #a8d575 !important;
+}
+
+body.dark-mode .search-box,
+body.dark-mode .search-guides {
+    background-color: #2c3029 !important; 
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .search-box input,
+body.dark-mode .search-guides input {
+    background-color: transparent !important;
+    border: none !important;
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .search-box input::placeholder,
+body.dark-mode .search-guides input::placeholder {
+    color: var(--text-muted) !important;
+}
+
+body.dark-mode .search-box i,
+body.dark-mode .search-guides i {
+    color: var(--text-muted) !important;
+}
+
+body.dark-mode input:not([type="file"]):not([type="checkbox"]):not(.search-box input):not(.search-guides input),
+body.dark-mode textarea {
+    background-color: #171916 !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode #themeToggleBtn {
+    color: #f1c40f !important; 
+}
+
+body.dark-mode .career-card {
+    background: linear-gradient(135deg, #1b2e10, #131f0a) !important; 
+    border: 1px solid #2f4d1c !important;
+}
+
+body.dark-mode .career-card h2 { color: #ffffff !important; }
+body.dark-mode .career-card p { color: #a8d575 !important; }
+body.dark-mode .career-card .tag { background: rgba(168, 213, 117, 0.2) !important; color: #a8d575 !important; }
+
+body.dark-mode .suggest-box,
+body.dark-mode #notifDropdown,
+body.dark-mode .careero-toast-notif,
+body.dark-mode .profile-menu {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode #notifDropdown > div:first-child {
+    background: var(--sidebar-bg) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .suggest-item:hover,
+body.dark-mode #notifList > div:hover,
+body.dark-mode .profile-menu a:hover,
+body.dark-mode .profile-menu button:hover {
+    background: #2c3029 !important;
+}
+
+body.dark-mode .suggest-item span,
+body.dark-mode #notifList span,
+body.dark-mode .toast-name,
+body.dark-mode .profile-menu a,
+body.dark-mode .profile-menu button {
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .toast-text { color: var(--text-muted) !important; }
+
+body.dark-mode .coach-message {
+    background-color: #2c3029 !important;
+    color: var(--text-main) !important; 
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .coach-message strong { color: #a8d575 !important; }
+
+body.dark-mode #skillTags span,
+body.dark-mode .skill-pill,
+body.dark-mode .profile-tags span {
+    background-color: #2c3029 !important; 
+    color: #a8d575 !important; 
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .edu-item {
+    background-color: #2c3029 !important; 
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .edu-item h4,
+body.dark-mode .edu-item span { color: var(--text-main) !important; }
+
+body.dark-mode #connectionCount {
+    color: #a8d575 !important;
+}
+
+body.dark-mode #btn-connect,
+body.dark-mode #btn-message,
+body.dark-mode #btn-reject,
+body.dark-mode #btn-disconnect,
+body.dark-mode #btn-pending,
+body.dark-mode .primary-btn,
+body.dark-mode .secondary-btn {
+    background-color: #2c3029 !important;
+    color: #a8d575 !important; 
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .edit-badge {
+    background-color: #2c3029 !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode #careero-chatbox {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .chatbox-header {
+    background-color: var(--sidebar-bg) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode #chatbox-name,
+body.dark-mode #close-chatbox { color: var(--text-main) !important; }
+
+body.dark-mode .chatbox-messages { background-color: var(--bg-body) !important; }
+
+body.dark-mode .chatbox-messages div[style*="e5e5e5"], 
+body.dark-mode .chatbox-messages div[style*="rgb(229, 229, 229)"] {
+    background-color: #2c3029 !important;
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .chatbox-input-area {
+    background-color: var(--bg-card) !important;
+    border-top: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .icon-btn,
+body.dark-mode #bellIconBtn {
+    background-color: #2c3029 !important; 
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .icon-btn i,
+body.dark-mode #bellIconBtn i,
+body.dark-mode #bellIcon {
+    color: var(--text-main) !important; 
+}
+
+body.dark-mode .analytic-item {
+    background-color: #2c3029 !important; 
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .analytic-item .item-header {
+    color: var(--text-main) !important; 
+}
+
+body.dark-mode .progress-bar-bg {
+    background-color: #171916 !important;
+}
+
+body.dark-mode .chat-messages {
+    background-color: #171916 !important; 
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .chat-messages div {
+    background-color: #2c3029 !important;
+    border-color: var(--border-color) !important;
+}
+
+body.dark-mode .chat-messages * {
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .suggestion-btn {
+    background-color: #2c3029 !important;
+    color: #a8d575 !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .chat-input-area {
+    background-color: var(--bg-card) !important;
+    border-top: 1px solid var(--border-color) !important;
+}
+
+body, .main-content, .sidebar, .cv-card, .score-card, .coach-card, .analytic-item, .icon-btn, .search-box, .search-guides, .suggestion-btn, .chat-messages {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

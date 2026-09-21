@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careero - View applications</title>
+    
+    <link rel="stylesheet" href="view.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="view-container">
+        
+        <header class="view-header">
+            <div class="logo">Careero</div>
+            <div class="header-right">
+                <i class="fa-regular fa-bell"></i>
+                
+                <div class="profile-wrapper">
+                    <img 
+                        id="userPhoto" 
+                        src="https://i.pravatar.cc/100?img=12" 
+                        alt="Profile" 
+                        class="profile-pic profile-click"
+                        onclick="toggleProfileMenu()"
+                    >
+
+                    <div id="profileMenu" class="profile-menu hidden">
+                        <a href="dashboard.html">View Dashboard</a>
+                        <button onclick="logout()">Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="view-main">
+            
+            <div class="cards-grid">
+                
+                <div class="app-card">
+                    <h3>Interviews</h3>
+                    <div class="stat-list">
+                        <div class="stat-item">
+                            <span>Applied</span>
+                            <span class="badge badge-teal">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Interviews</span>
+                            <span class="badge badge-green">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Offers</span>
+                            <span class="badge badge-grey">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-card">
+                    <h3>Applied</h3>
+                    <div class="stat-list">
+                        <div class="stat-item">
+                            <span>Applied</span>
+                            <span class="badge badge-teal">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Interviews</span>
+                            <span class="badge badge-green">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Offers</span>
+                            <span class="badge badge-grey">0</span>
+                        </div>
+                    </div>
+                </div>
+
+    <script src="script.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqzBgcZT_fXpFBbV76Vvkjpdt8M2q4C60",
+            authDomain: "careero-login.firebaseapp.com",
+            projectId: "careero-login",
+            storageBucket: "careero-login.firebasestorage.app",
+            messagingSenderId: "1034591118862",
+            appId: "1:1034591118862:web:40f6b99c07a64420c4fe5f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const docSnap = await getDoc(userDocRef);
+
+                    if (docSnap.exists()) {
+                        const userData = docSnap.data();
+
+                        if (userData.photo) {
+                            const userPhoto = document.getElementById("userPhoto");
+                            if (userPhoto) {
+                                userPhoto.src = userData.photo;
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error("Gagal menarik data profil untuk halaman view:", error);
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
